@@ -12,9 +12,9 @@ export default class HomePage extends React.Component {
   static navigationOptions = {
     title: 'Welcome',
   };
-  
+
   loginHandler(){
-    this.props.navigation.navigate('List');
+    this.props.navigation.navigate('List', {username: this.state.username});
   }
 
   render() {
@@ -26,10 +26,12 @@ export default class HomePage extends React.Component {
         <Text style={styles.label}>Username:</Text>
         <TextInput
           style={styles.input}
+          onChangeText={(text) => this.setState({username: text})}
         />
         <Text style={styles.label}>Password:</Text>
         <TextInput
           style={styles.input}
+          onChangeText={(text) => this.setState({password: text})}
         />
         <Button
           onPress={this.loginHandler.bind(this)}
