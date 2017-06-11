@@ -1,4 +1,5 @@
 import React from 'react';
+import List from './list';
 import {
   StyleSheet,
   Text,
@@ -8,9 +9,12 @@ import {
 } from 'react-native';
 
 export default class HomePage extends React.Component {
-
+  static navigationOptions = {
+    title: 'Welcome',
+  };
+  
   loginHandler(){
-
+    this.props.navigation.navigate('List');
   }
 
   render() {
@@ -28,10 +32,9 @@ export default class HomePage extends React.Component {
           style={styles.input}
         />
         <Button
-          onPress={this.loginHandler}
+          onPress={this.loginHandler.bind(this)}
           title="log in"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
         />
       </View>
     );
