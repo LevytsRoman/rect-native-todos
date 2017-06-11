@@ -1,13 +1,13 @@
 import React from 'react';
 import HomePage from './homePage'
+import List from './list'
 import {
-  Navigator
-} from 'react-native';
+  StackNavigator,
+} from 'react-navigation';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <HomePage/>
-    );
-  }
-}
+const App = StackNavigator({
+  Home: { screen: HomePage },
+  List: { screen: List },
+});
+
+export default App;
