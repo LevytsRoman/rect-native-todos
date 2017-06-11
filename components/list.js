@@ -4,17 +4,15 @@ import {
   Text,
   View
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+
 
 export default class List extends React.Component {
   render() {
+    debugger
     return (
       <View style={styles.container}>
-        <Text>
-          learn react native
-        </Text>
-        <Text>
-          build todolist
-        </Text>
+        <Text>{this.props.navigation.state.params.username}</Text>
       </View>
     );
   }
