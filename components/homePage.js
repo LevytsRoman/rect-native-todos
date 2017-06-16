@@ -58,9 +58,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-    height: 20,
-    width: 200,
-    borderColor: 'orange',
-    borderWidth: 2
+    // fontSize: 20,
+    // height: 60,
+    width: 200
   }
 });
