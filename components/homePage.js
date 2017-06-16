@@ -9,6 +9,13 @@ import {
 } from 'react-native';
 
 export default class HomePage extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      username: ''
+    }
+  }
+
   static navigationOptions = {
     title: 'Welcome',
   };
