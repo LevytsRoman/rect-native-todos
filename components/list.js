@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   TextInput,
   TouchableOpacity
 } from 'react-native';
@@ -31,7 +32,7 @@ export default class List extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView>
         <TextInput
           style={styles.input}
           onChangeText={newTodo => this.setState({newTodo})}
@@ -43,7 +44,7 @@ export default class List extends React.Component {
         {this.state.todos.map((todo, i) => {
           return <Text onPress={this.deleteTodo.bind(this, i)} key={i}>{todo}</Text>
         })}
-      </View>
+      </ScrollView>
     );
   }
 }
