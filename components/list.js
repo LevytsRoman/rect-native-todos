@@ -18,9 +18,22 @@ export default class List extends React.Component {
     }
   }
 
+  addTodo(){
+    const todos = [...this.state.todos, this.state.newTodo]
+    this.setState({todos, newTodo: ''})
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          onChangeText={newTodo => this.setState({newTodo})}
+          value={this.state.newTodo}
+        />
+        <TouchableOpacity onPress={this.addTodo.bind(this)}>
+          <Text>Click me</Text>
+        </TouchableOpacity>
         {this.state.todos.map((todo, i) => {
           return <Text key={i}>{todo}</Text>
         })}
@@ -35,5 +48,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  input: {
+    height: 20,
+    width: 200,
+    borderColor: 'orange',
+    borderWidth: 2
   }
 });
