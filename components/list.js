@@ -13,7 +13,7 @@ export default class List extends React.Component {
   constructor(){
     super();
     this.state = {
-      todos: ['a', 'b', 'c', 'd'],
+      todos: [],
       newTodo: ''
     }
   }
@@ -21,6 +21,12 @@ export default class List extends React.Component {
   addTodo(){
     const todos = [...this.state.todos, this.state.newTodo]
     this.setState({todos, newTodo: ''})
+  }
+
+  deleteTodo(i){
+    const todos = this.state.todos
+    todos.splice(i,1);
+    this.setState({todos})
   }
 
   render() {
@@ -35,7 +41,7 @@ export default class List extends React.Component {
           <Text>Click me</Text>
         </TouchableOpacity>
         {this.state.todos.map((todo, i) => {
-          return <Text key={i}>{todo}</Text>
+          return <Text onPress={this.deleteTodo.bind(this, i)} key={i}>{todo}</Text>
         })}
       </View>
     );
