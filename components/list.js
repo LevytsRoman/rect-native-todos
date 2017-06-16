@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TextInput,
+  Button,
   TouchableOpacity
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
@@ -33,17 +34,24 @@ export default class List extends React.Component {
   render() {
     return (
       <ScrollView>
-        <TextInput
-          style={styles.input}
-          onChangeText={newTodo => this.setState({newTodo})}
-          value={this.state.newTodo}
-        />
-        <TouchableOpacity onPress={this.addTodo.bind(this)}>
-          <Text>Click me</Text>
-        </TouchableOpacity>
-        {this.state.todos.map((todo, i) => {
-          return <Text onPress={this.deleteTodo.bind(this, i)} key={i}>{todo}</Text>
-        })}
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+
+            onChangeText={newTodo => this.setState({newTodo})}
+            value={this.state.newTodo}
+          />
+        <Button onPress={this.addTodo.bind(this)} title={'Add todo'}/>
+          {this.state.todos.map((todo, i) => {
+            return (
+              <Text
+                style={styles.todo}
+                onPress={this.deleteTodo.bind(this, i)}
+                key={i}>{todo}
+              </Text>
+            )
+          })}
+        </View>
       </ScrollView>
     );
   }
@@ -53,13 +61,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
   input: {
-    height: 20,
-    width: 200,
-    borderColor: 'orange',
-    borderWidth: 2
+
+    // fontSize: 30,
+    // height: 60,
+    // width: 200,
+    // borderColor: 'orange',
+    // borderWidth: 2
+  },
+  button: {
+    backgroundColor: 'red'
+  },
+  todo: {
+    margin: 10,
+    padding: 10,
+    fontSize: 20
   }
 });
