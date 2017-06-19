@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   input: {
     // fontSize: 20,
-    // height: 60,
+    height: 60,
     width: 200
   }
 });
