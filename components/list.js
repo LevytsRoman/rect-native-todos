@@ -51,18 +51,26 @@ export default class List extends React.Component {
 
   render() {
     return (
-      <ScrollView>
         <View style={styles.container}>
-          <TextInput
-            style={styles.input}
+          <View style={styles.form}>
+            <TextInput
+              style={styles.input}
 
-            onChangeText={newTodo => this.setState({newTodo: {text: newTodo, done: false}})}
-            value={this.state.newTodo.text}
-          />
-        <Button onPress={this.addTodo.bind(this)} title={'Add todo'}/>
+              onChangeText={newTodo => this.setState({newTodo: {text: newTodo, done: false}})}
+              value={this.state.newTodo.text}
+            />
+            <TouchableOpacity
+              onPress={this.addTodo.bind(this)}
+              style={styles.button}
+              >
+              <Text>Add todo</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
           {this.state.todos.map((todo, i) => {
             return (
               <Swipeout
+                key={i}
                 left={[
                   {
                     text: '',
@@ -85,14 +93,14 @@ export default class List extends React.Component {
                 <Text
                   style={todo.done ? styles.done : styles.todo}
                   onPress={this.finishTodo.bind(this, i)}
-                  key={i}>{todo.text}
+                  >
+                  {todo.text}
                 </Text>
               </Swipeout>
             )
           })}
+        </ScrollView>
         </View>
-
-      </ScrollView>
     );
   }
 }
@@ -100,27 +108,34 @@ export default class List extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: '#fff',
     alignItems: 'stretch',
     justifyContent: 'center',
   },
+  form: {
+    flexDirection: 'row',
+    borderColor: 'red'
+  },
   input: {
     fontSize: 30,
-    height: 60,
-    // width: 200,
-    // borderColor: 'orange',
-    // borderWidth: 2
+    height: 50,
+    flex: 0.7
   },
   done: {
     textDecorationLine: 'line-through',
     margin: 10,
     padding: 10,
-    fontSize: 20,
-    color: 'white',
-    backgroundColor: 'black'
+    fontSize: 20
   },
   button: {
-    backgroundColor: 'red'
+    borderColor: 'red',
+    borderWidth: 2,
+    flex: 0.3,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50
   },
   todo: {
     margin: 10,
