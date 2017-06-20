@@ -43,7 +43,6 @@ export default class List extends React.Component {
   }
 
   finishTodo(i){
-    // debugger
     const todos = this.state.todos;
     todos[i].done = !todos[i].done
     this.setState({todos})
@@ -93,7 +92,7 @@ export default class List extends React.Component {
                 <Text
                   style={todo.done ? styles.done : styles.todo}
                   onPress={this.finishTodo.bind(this, i)}
-                  >
+                >
                   {todo.text}
                 </Text>
               </Swipeout>
@@ -126,7 +125,13 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
     margin: 10,
     padding: 10,
+<<<<<<< c26bdb24b9d50ef33c75a8c7f1753a44464fcbdb
     fontSize: 20
+=======
+    fontSize: 20,
+    color: 'green',
+    // backgroundColor: 'black'
+>>>>>>> play with style
   },
   button: {
     borderColor: 'red',
