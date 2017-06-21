@@ -6,7 +6,8 @@ import {
   ScrollView,
   TextInput,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Swipeout from 'rc-swipeout';
@@ -23,17 +24,30 @@ export default class List extends React.Component {
     }
   }
 
-  addTodo(){
-    const todos = [...this.state.todos, this.state.newTodo]
+  componentDidMount(){
+      AsyncStorage.getAllKeys((error, keys) => {
+        AsyncStorage.multiGet(keys, (e, results) => {
+          const todos = results.map(r => {
+            // debugger
+            return JSON.parse(r[1])
+          })
+          this.setState({todos})
+        })
+      })
+  }
 
-    this.setState({
-      todos,
-      newTodo: {
-        text: '',
-        done: false
-      }
-    })
-    // debugger
+  addTodo(){
+    const my_key = (Math.random() * (100)).toString();
+    debugger
+    AsyncStorage.setItem(my_key, JSON.stringify(this.state.newTodo))
+    // const todos = [...this.state.todos, this.state.newTodo]
+    // this.setState({
+    //   todos,
+    //   newTodo: {
+    //     text: '',
+    //     done: false
+    //   }
+    // })
   }
 
   deleteTodo(i){
@@ -51,6 +65,7 @@ export default class List extends React.Component {
   render() {
     return (
         <View style={styles.container}>
+          <Text>hello {this.props.navigation.state.params.username}, here's your todo list:</Text>
           <View style={styles.form}>
             <TextInput
               style={styles.input}
@@ -117,7 +132,7 @@ const styles = StyleSheet.create({
     borderColor: 'red'
   },
   input: {
-    fontSize: 30,
+    fontSize: 20,
     height: 50,
     flex: 0.7
   },
@@ -125,13 +140,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
     margin: 10,
     padding: 10,
-<<<<<<< c26bdb24b9d50ef33c75a8c7f1753a44464fcbdb
     fontSize: 20
-=======
-    fontSize: 20,
-    color: 'green',
-    // backgroundColor: 'black'
->>>>>>> play with style
   },
   button: {
     borderColor: 'red',
