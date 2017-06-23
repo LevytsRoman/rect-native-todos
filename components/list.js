@@ -67,7 +67,6 @@ export default class List extends React.Component {
 
   deleteTodo(i){
     const todos = this.state.todos
-
     AsyncStorage.removeItem(todos[i].id)
 
     todos.splice(i,1);
@@ -88,12 +87,13 @@ export default class List extends React.Component {
         <View style={styles.container}>
           <Text>hello {this.props.navigation.state.params.username}, here's your todo list:</Text>
           <View style={styles.form}>
-            <TextInput
-              style={styles.input}
-
-              onChangeText={newTodo => this.setState({newTodo: {text: newTodo, done: false}})}
-              value={this.state.newTodo.text}
-            />
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.input}
+                onChangeText={newTodo => this.setState({newTodo: {text: newTodo, done: false}})}
+                value={this.state.newTodo.text}
+              />
+            </View>
             <TouchableOpacity
               onPress={this.addTodo.bind(this)}
               style={styles.button}
@@ -106,19 +106,26 @@ export default class List extends React.Component {
             return (
               <Swipeout
                 key={i}
+                style={{backgroundColor: 'white'}}
                 left={[
                   {
                     text: 'delete',
-                    onPress:() => this.deleteTodo.bind(this),
+                    onPress:() => this.deleteTodo(i),
                     style: {backgroundColor: 'red'},
                     className: 'custom-class-1'
                   }
                 ]}
                 right={[
                   {
-                    text: '',
+                    text: (todo.done ? 'unfinish' : 'finish'),
+                    onPress:() => this.finishTodo(i),
+                    style: {backgroundColor: 'green'},
+                    className: 'custom-class-2'
+                  },
+                  {
+                    text: 'edit',
                     onPress:() => console.log('delete'),
-                    style: {},
+                    style: {backgroundColor: 'yellow'},
                     className: 'custom-class-2'
                   }
                 ]}
@@ -127,10 +134,15 @@ export default class List extends React.Component {
               >
                 <Text
                   style={todo.done ? styles.done : styles.todo}
-                  onPress={this.finishTodo.bind(this, i)}
                 >
                   {todo.text}
                 </Text>
+                <View
+                  style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                  }}
+                />
               </Swipeout>
             )
           })}
@@ -152,9 +164,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: 'red'
   },
+  inputView: {
+    borderWidth: 1,
+    borderBottomLeftRadius: 5,
+    borderTopLeftRadius: 5,
+    flex: 0.7,
+  },
   input: {
+    borderColor: 'black',
+    padding: 10,
     fontSize: 20,
-    height: 50,
     flex: 0.7
   },
   done: {
@@ -164,10 +183,11 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   button: {
-    borderColor: 'red',
-    borderWidth: 2,
+    borderColor: 'black',
+    borderWidth: 1,
     flex: 0.3,
-    borderRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     height: 50
