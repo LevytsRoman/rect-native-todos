@@ -6,7 +6,8 @@ import {
   ScrollView,
   TextInput,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Swipeout from 'rc-swipeout';
@@ -17,41 +18,75 @@ export default class List extends React.Component {
     this.state = {
       todos: [],
       newTodo: {
+        id: '',
         text: '',
-        done: false
+        done: false,
       }
     }
   }
 
+  componentDidMount(){
+    AsyncStorage.getAllKeys((error, keys) => {
+      // AsyncStorage.multiRemove(keys)
+      AsyncStorage.multiGet(keys, (e, results) => {
+        const todos = results.map(r => {
+          return JSON.parse(r[1])
+        })
+        this.setState({todos})
+      })
+    })
+  }
+
   addTodo(){
-    const todos = [...this.state.todos, this.state.newTodo]
+    const l = this.state.todos.length
+
+    // debugger
+    var my_key = l === 0 ? '1' : (parseInt(this.state.todos[l-1].id) + 1).toString();
+
+    // debugger
+    const newTodo = {
+      id: my_key,
+      text: this.state.newTodo.text,
+      done: false
+    }
+
+    AsyncStorage.setItem(my_key, JSON.stringify(newTodo))
+    // poyentially need to explore Async storage and only update state on successfull response
+
+    const todos = [...this.state.todos, newTodo]
 
     this.setState({
       todos,
       newTodo: {
+        id: '',
         text: '',
         done: false
       }
     })
-    // debugger
   }
 
   deleteTodo(i){
     const todos = this.state.todos
+
+    AsyncStorage.removeItem(todos[i].id)
+
     todos.splice(i,1);
     this.setState({todos})
   }
 
   finishTodo(i){
-    // debugger
     const todos = this.state.todos;
-    todos[i].done = !todos[i].done
+    todos[i].done = !todos[i].done;
+
+    AsyncStorage.mergeItem(todos[i].id, JSON.stringify(todos[i]));
+
     this.setState({todos})
   }
 
   render() {
     return (
         <View style={styles.container}>
+          <Text>hello {this.props.navigation.state.params.username}, here's your todo list:</Text>
           <View style={styles.form}>
             <TextInput
               style={styles.input}
@@ -73,9 +108,9 @@ export default class List extends React.Component {
                 key={i}
                 left={[
                   {
-                    text: '',
-                    onPress:() => console.log('reply'),
-                    style: {},
+                    text: 'delete',
+                    onPress:() => this.deleteTodo.bind(this),
+                    style: {backgroundColor: 'red'},
                     className: 'custom-class-1'
                   }
                 ]}
@@ -87,13 +122,13 @@ export default class List extends React.Component {
                     className: 'custom-class-2'
                   }
                 ]}
-                onOpen={this.deleteTodo.bind(this, i)}
-                onClose={this.deleteTodo.bind(this, i)}
+                onOpen={()=> {console.log('hi')}}
+                onClose={()=> console.log('hi')}
               >
                 <Text
                   style={todo.done ? styles.done : styles.todo}
                   onPress={this.finishTodo.bind(this, i)}
-                  >
+                >
                   {todo.text}
                 </Text>
               </Swipeout>
@@ -118,7 +153,7 @@ const styles = StyleSheet.create({
     borderColor: 'red'
   },
   input: {
-    fontSize: 30,
+    fontSize: 20,
     height: 50,
     flex: 0.7
   },
